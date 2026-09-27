@@ -101,12 +101,21 @@ def move_triangle():
     # 이동 순서대로 꼭짓점을 나열
     vertices = [TRI_TOP, TRI_RIGHT, TRI_LEFT]
 
+    # 지금 이동하고 있는 변 번호
+    edge = 0
+
     while True:
-        # 캐릭터 이미지 표시
-        clear_canvas()
-        character.draw(vertices[0][0], vertices[0][1])
-        update_canvas()
-        delay(X_FRAME)
+        for step in range(STEPS_PER_SIDE + 1):
+            # 캐릭터 이미지 표시
+            clear_canvas()
+            character.draw(vertices[0][0], vertices[0][1])
+            update_canvas()
+            delay(X_FRAME)
+
+        # 한 변을 다 이동했으면 다음 변으로
+        edge += 1
+        if edge == 3:
+            edge = 0
 
 while True:
     move_circle()
