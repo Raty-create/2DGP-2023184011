@@ -28,7 +28,10 @@ def move_circle():
     # 코사인 값으로 x 좌표 계산
     x = CENTER_X + RADIUS * math.cos(theta)
 
-    character.draw(x, CENTER_Y)
+    # 사인 값으로 y 좌표 계산
+    y = CENTER_Y + RADIUS * math.sin(theta)
+
+    character.draw(x, y)
     update_canvas()
     pass
 
