@@ -66,6 +66,10 @@ def move_rectangle():
                 # 위쪽 변을 왼쪽에서 오른쪽으로 이동
                 x = left + (right - left) * step / STEPS_PER_SIDE
                 y = top
+            elif corner == 1:
+                # 오른쪽 변을 위에서 아래로 이동
+                x = right
+                y = top + (bottom - top) * step / STEPS_PER_SIDE
             else:
                 x = left
                 y = top
