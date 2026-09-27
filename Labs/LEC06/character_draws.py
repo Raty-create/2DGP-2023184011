@@ -17,8 +17,11 @@ RADIUS = 200
 RECT_W = 400
 RECT_H = 400
 
-# 한 변을 몇 번에 나눠 이동할지 정하는 상수
-STEPS_PER_SIDE = 20
+# 한 바퀴를 도는 프레임 수를 원운동(360프레임 = 3.6초)에 맞춘다
+# 사각형: 4변 x (스텝 + 1) = 360  ->  스텝 89
+# 삼각형: 3변 x (스텝 + 1) = 360  ->  스텝 119
+RECT_STEPS = 89
+TRI_STEPS = 119
 
 # 삼각형 꼭짓점 좌표 (위쪽, 오른쪽 아래, 왼쪽 아래)
 TRI_TOP = (CENTER_X, CENTER_Y + RADIUS)
@@ -67,23 +70,23 @@ def move_rectangle():
 
     # 사각형 한 바퀴를 도는 꼭짓점 번호 (0: 좌상단, 1: 우상단, 2: 우하단, 3: 좌하단)
     for corner in range(4):
-        for step in range(STEPS_PER_SIDE + 1):
+        for step in range(RECT_STEPS + 1):
             if corner == 0:
                 # 위쪽 변을 왼쪽에서 오른쪽으로 이동
-                x = left + (right - left) * step / STEPS_PER_SIDE
+                x = left + (right - left) * step / RECT_STEPS
                 y = top
             elif corner == 1:
                 # 오른쪽 변을 위에서 아래로 이동
                 x = right
-                y = top + (bottom - top) * step / STEPS_PER_SIDE
+                y = top + (bottom - top) * step / RECT_STEPS
             elif corner == 2:
                 # 아래쪽 변을 오른쪽에서 왼쪽으로 이동
-                x = right - (right - left) * step / STEPS_PER_SIDE
+                x = right - (right - left) * step / RECT_STEPS
                 y = bottom
             else:
                 # 왼쪽 변을 아래에서 위로 이동
                 x = left
-                y = bottom - (bottom - top) * step / STEPS_PER_SIDE
+                y = bottom - (bottom - top) * step / RECT_STEPS
 
             # 캐릭터 이미지 표시
             draw_character(x, y)
@@ -96,11 +99,11 @@ def move_triangle():
 
     # 삼각형 한 바퀴를 도는 변 번호
     for edge in range(3):
-        for step in range(STEPS_PER_SIDE + 1):
+        for step in range(TRI_STEPS + 1):
             # 이번 변의 시작점과 끝점
             x1, y1 = vertices[edge]
             x2, y2 = vertices[(edge + 1) % 3]
-            t = step / STEPS_PER_SIDE
+            t = step / TRI_STEPS
 
             # 시작점과 끝점 사이에서 x 좌표 보간
             x = x1 + (x2 - x1) * t
