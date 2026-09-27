@@ -57,6 +57,9 @@ def move_rectangle():
     top = CENTER_Y - RECT_H / 2
     bottom = CENTER_Y + RECT_H / 2
 
+    # 지금 이동하고 있는 꼭짓점 번호 (0: 좌상단, 1: 우상단, 2: 우하단, 3: 좌하단)
+    corner = 0
+
     while True:
         for step in range(STEPS_PER_SIDE + 1):
             # 캐릭터 이미지 표시
@@ -64,6 +67,11 @@ def move_rectangle():
             character.draw(left, top)
             update_canvas()
             delay(X_FRAME)
+
+        # 한 변을 다 이동했으면 다음 꼭짓점으로
+        corner += 1
+        if corner == 4:
+            corner = 0
 
 def move_triangle():
     print("TRIANGLE")
