@@ -114,9 +114,12 @@ def move_triangle():
             # 시작점과 끝점 사이에서 x 좌표 보간
             x = x1 + (x2 - x1) * t
 
+            # 시작점과 끝점 사이에서 y 좌표 보간
+            y = y1 + (y2 - y1) * t
+
             # 캐릭터 이미지 표시
             clear_canvas()
-            character.draw(x, y1)
+            character.draw(x, y)
             update_canvas()
             delay(X_FRAME)
 
