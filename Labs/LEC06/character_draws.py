@@ -18,22 +18,23 @@ X_FRAME = 0.01
 
 def move_circle():
     print("CIRCLE")
-    # 캐릭터 이미지 표시
-    clear_canvas()
 
-    # 시작 각도(도 단위)를 라디안으로 변환
     degree = 0
-    theta = math.radians(degree)
+    while True:
+        # 캐릭터 이미지 표시
+        clear_canvas()
 
-    # 코사인 값으로 x 좌표 계산
-    x = CENTER_X + RADIUS * math.cos(theta)
+        theta = math.radians(degree)
 
-    # 사인 값으로 y 좌표 계산
-    y = CENTER_Y + RADIUS * math.sin(theta)
+        # 코사인 값으로 x 좌표 계산
+        x = CENTER_X + RADIUS * math.cos(theta)
 
-    character.draw(x, y)
-    update_canvas()
-    pass
+        # 사인 값으로 y 좌표 계산
+        y = CENTER_Y + RADIUS * math.sin(theta)
+
+        character.draw(x, y)
+        update_canvas()
+        delay(X_FRAME)
 
 def move_rectangle():
     print("RECTANGLE")
