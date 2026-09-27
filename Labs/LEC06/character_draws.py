@@ -39,7 +39,7 @@ def move_circle():
     print("CIRCLE")
 
     degree = 0
-    while True:
+    while degree < 360:
         theta = math.radians(degree)
 
         # 코사인 값으로 x 좌표 계산
@@ -51,10 +51,7 @@ def move_circle():
         # 캐릭터 이미지 표시
         draw_character(x, y)
 
-        # 한 바퀴(360도)를 돌면 다시 0도로 돌아간다
         degree += 1
-        if degree == 360:
-            degree = 0
 
 def move_rectangle():
     print("RECTANGLE")
@@ -65,10 +62,8 @@ def move_rectangle():
     top = CENTER_Y - RECT_H / 2
     bottom = CENTER_Y + RECT_H / 2
 
-    # 지금 이동하고 있는 꼭짓점 번호 (0: 좌상단, 1: 우상단, 2: 우하단, 3: 좌하단)
-    corner = 0
-
-    while True:
+    # 사각형 한 바퀴를 도는 꼭짓점 번호 (0: 좌상단, 1: 우상단, 2: 우하단, 3: 좌하단)
+    for corner in range(4):
         for step in range(STEPS_PER_SIDE + 1):
             if corner == 0:
                 # 위쪽 변을 왼쪽에서 오른쪽으로 이동
@@ -90,21 +85,14 @@ def move_rectangle():
             # 캐릭터 이미지 표시
             draw_character(x, y)
 
-        # 한 변을 다 이동했으면 다음 꼭짓점으로
-        corner += 1
-        if corner == 4:
-            corner = 0
-
 def move_triangle():
     print("TRIANGLE")
 
     # 이동 순서대로 꼭짓점을 나열
     vertices = [TRI_TOP, TRI_RIGHT, TRI_LEFT]
 
-    # 지금 이동하고 있는 변 번호
-    edge = 0
-
-    while True:
+    # 삼각형 한 바퀴를 도는 변 번호
+    for edge in range(3):
         for step in range(STEPS_PER_SIDE + 1):
             # 이번 변의 시작점과 끝점
             x1, y1 = vertices[edge]
@@ -119,11 +107,6 @@ def move_triangle():
 
             # 캐릭터 이미지 표시
             draw_character(x, y)
-
-        # 한 변을 다 이동했으면 다음 변으로
-        edge += 1
-        if edge == 3:
-            edge = 0
 
 while True:
     move_circle()
