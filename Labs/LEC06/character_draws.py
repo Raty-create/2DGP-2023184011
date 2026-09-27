@@ -28,6 +28,9 @@ TRI_LEFT = (CENTER_X - RADIUS, CENTER_Y + RADIUS)
 # 애니메이션 속도 조절용 상수
 X_FRAME = 0.01
 
+# 도형이 바뀔 때 잠깐 멈추는 시간
+PAUSE = 0.5
+
 # 한 프레임에 캐릭터 한 장을 그리는 함수
 def draw_character(x, y):
     clear_canvas()
@@ -112,6 +115,6 @@ while True:
     move_circle()
     move_rectangle()
     move_triangle()
-    delay(X_FRAME)
+    delay(PAUSE)
 
 close_canvas()
