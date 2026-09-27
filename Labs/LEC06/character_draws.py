@@ -1,5 +1,6 @@
 #실습 과제 진행
 from pico2d import *
+import math
 
 # 맨처음 해야 할 일은.
 open_canvas(800, 600)
