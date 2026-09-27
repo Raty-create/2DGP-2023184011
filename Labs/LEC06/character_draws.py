@@ -20,6 +20,11 @@ def move_circle():
     print("CIRCLE")
     # 캐릭터 이미지 표시
     clear_canvas()
+
+    # 시작 각도(도 단위)를 라디안으로 변환
+    degree = 0
+    theta = math.radians(degree)
+
     character.draw(CENTER_X, CENTER_Y)
     update_canvas()
     pass
