@@ -17,6 +17,9 @@ RADIUS = 200
 RECT_W = 400
 RECT_H = 400
 
+# 한 변을 몇 번에 나눠 이동할지 정하는 상수
+STEPS_PER_SIDE = 20
+
 # 애니메이션 속도 조절용 상수
 X_FRAME = 0.01
 
@@ -55,11 +58,12 @@ def move_rectangle():
     bottom = CENTER_Y + RECT_H / 2
 
     while True:
-        # 캐릭터 이미지 표시
-        clear_canvas()
-        character.draw(left, top)
-        update_canvas()
-        delay(X_FRAME)
+        for step in range(STEPS_PER_SIDE + 1):
+            # 캐릭터 이미지 표시
+            clear_canvas()
+            character.draw(left, top)
+            update_canvas()
+            delay(X_FRAME)
 
 def move_triangle():
     print("TRIANGLE")
