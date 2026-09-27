@@ -106,9 +106,17 @@ def move_triangle():
 
     while True:
         for step in range(STEPS_PER_SIDE + 1):
+            # 이번 변의 시작점과 끝점
+            x1, y1 = vertices[edge]
+            x2, y2 = vertices[(edge + 1) % 3]
+            t = step / STEPS_PER_SIDE
+
+            # 시작점과 끝점 사이에서 x 좌표 보간
+            x = x1 + (x2 - x1) * t
+
             # 캐릭터 이미지 표시
             clear_canvas()
-            character.draw(vertices[0][0], vertices[0][1])
+            character.draw(x, y1)
             update_canvas()
             delay(X_FRAME)
 
