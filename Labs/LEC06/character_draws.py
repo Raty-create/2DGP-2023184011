@@ -13,6 +13,10 @@ CENTER_Y = 300
 # 원 궤적의 반지름
 RADIUS = 200
 
+# 사각형 궤적의 가로 / 세로 길이
+RECT_W = 400
+RECT_H = 400
+
 # 애니메이션 속도 조절용 상수
 X_FRAME = 0.01
 
@@ -43,6 +47,13 @@ def move_circle():
 
 def move_rectangle():
     print("RECTANGLE")
+
+    # 사각형 궤적의 네 변 좌표
+    left = CENTER_X - RECT_W / 2
+    right = CENTER_X + RECT_W / 2
+    top = CENTER_Y - RECT_H / 2
+    bottom = CENTER_Y + RECT_H / 2
+
     pass
 
 def move_triangle():
