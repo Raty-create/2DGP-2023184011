@@ -10,6 +10,9 @@ character = load_image('character.png')
 CENTER_X = 400
 CENTER_Y = 300
 
+# 원 궤적의 반지름
+RADIUS = 200
+
 # 애니메이션 속도 조절용 상수
 X_FRAME = 0.01
 
