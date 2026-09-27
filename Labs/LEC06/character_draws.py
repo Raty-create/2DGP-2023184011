@@ -25,7 +25,10 @@ def move_circle():
     degree = 0
     theta = math.radians(degree)
 
-    character.draw(CENTER_X, CENTER_Y)
+    # 코사인 값으로 x 좌표 계산
+    x = CENTER_X + RADIUS * math.cos(theta)
+
+    character.draw(x, CENTER_Y)
     update_canvas()
     pass
 
