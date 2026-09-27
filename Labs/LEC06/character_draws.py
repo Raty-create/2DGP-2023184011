@@ -62,9 +62,17 @@ def move_rectangle():
 
     while True:
         for step in range(STEPS_PER_SIDE + 1):
+            if corner == 0:
+                # 위쪽 변을 왼쪽에서 오른쪽으로 이동
+                x = left + (right - left) * step / STEPS_PER_SIDE
+                y = top
+            else:
+                x = left
+                y = top
+
             # 캐릭터 이미지 표시
             clear_canvas()
-            character.draw(left, top)
+            character.draw(x, y)
             update_canvas()
             delay(X_FRAME)
 
