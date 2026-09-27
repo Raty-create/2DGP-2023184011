@@ -28,14 +28,18 @@ TRI_LEFT = (CENTER_X - RADIUS, CENTER_Y + RADIUS)
 # 애니메이션 속도 조절용 상수
 X_FRAME = 0.01
 
+# 한 프레임에 캐릭터 한 장을 그리는 함수
+def draw_character(x, y):
+    clear_canvas()
+    character.draw(x, y)
+    update_canvas()
+    delay(X_FRAME)
+
 def move_circle():
     print("CIRCLE")
 
     degree = 0
     while True:
-        # 캐릭터 이미지 표시
-        clear_canvas()
-
         theta = math.radians(degree)
 
         # 코사인 값으로 x 좌표 계산
@@ -44,9 +48,8 @@ def move_circle():
         # 사인 값으로 y 좌표 계산
         y = CENTER_Y + RADIUS * math.sin(theta)
 
-        character.draw(x, y)
-        update_canvas()
-        delay(X_FRAME)
+        # 캐릭터 이미지 표시
+        draw_character(x, y)
 
         # 한 바퀴(360도)를 돌면 다시 0도로 돌아간다
         degree += 1
@@ -85,10 +88,7 @@ def move_rectangle():
                 y = bottom - (bottom - top) * step / STEPS_PER_SIDE
 
             # 캐릭터 이미지 표시
-            clear_canvas()
-            character.draw(x, y)
-            update_canvas()
-            delay(X_FRAME)
+            draw_character(x, y)
 
         # 한 변을 다 이동했으면 다음 꼭짓점으로
         corner += 1
@@ -118,10 +118,7 @@ def move_triangle():
             y = y1 + (y2 - y1) * t
 
             # 캐릭터 이미지 표시
-            clear_canvas()
-            character.draw(x, y)
-            update_canvas()
-            delay(X_FRAME)
+            draw_character(x, y)
 
         # 한 변을 다 이동했으면 다음 변으로
         edge += 1
