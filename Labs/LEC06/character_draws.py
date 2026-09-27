@@ -101,7 +101,10 @@ def move_triangle():
     # 이동 순서대로 꼭짓점을 나열
     vertices = [TRI_TOP, TRI_RIGHT, TRI_LEFT]
 
-    pass
+    # 캐릭터 이미지 표시
+    clear_canvas()
+    character.draw(vertices[0][0], vertices[0][1])
+    update_canvas()
 
 while True:
     move_circle()
