@@ -6,6 +6,9 @@ import math
 open_canvas(800, 600)
 character = load_image('character.png')
 
+# 애니메이션 속도 조절용 상수
+X_FRAME = 0.01
+
 def move_circle():
     print("CIRCLE")
     # 캐릭터 이미지 표시
@@ -26,6 +29,6 @@ while True:
     move_circle()
     move_rectangle()
     move_triangle()
-    pass
+    delay(X_FRAME)
 
 close_canvas()
