@@ -36,6 +36,11 @@ def move_circle():
         update_canvas()
         delay(X_FRAME)
 
+        # 한 바퀴(360도)를 돌면 다시 0도로 돌아간다
+        degree += 1
+        if degree == 360:
+            degree = 0
+
 def move_rectangle():
     print("RECTANGLE")
     pass
