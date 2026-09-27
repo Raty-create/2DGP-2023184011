@@ -70,9 +70,14 @@ def move_rectangle():
                 # 오른쪽 변을 위에서 아래로 이동
                 x = right
                 y = top + (bottom - top) * step / STEPS_PER_SIDE
+            elif corner == 2:
+                # 아래쪽 변을 오른쪽에서 왼쪽으로 이동
+                x = right - (right - left) * step / STEPS_PER_SIDE
+                y = bottom
             else:
+                # 왼쪽 변을 아래에서 위로 이동
                 x = left
-                y = top
+                y = bottom - (bottom - top) * step / STEPS_PER_SIDE
 
             # 캐릭터 이미지 표시
             clear_canvas()
