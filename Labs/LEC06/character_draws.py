@@ -20,6 +20,11 @@ RECT_H = 400
 # 한 변을 몇 번에 나눠 이동할지 정하는 상수
 STEPS_PER_SIDE = 20
 
+# 삼각형 꼭짓점 좌표 (위쪽, 오른쪽 아래, 왼쪽 아래)
+TRI_TOP = (CENTER_X, CENTER_Y - RADIUS)
+TRI_RIGHT = (CENTER_X + RADIUS, CENTER_Y + RADIUS)
+TRI_LEFT = (CENTER_X - RADIUS, CENTER_Y + RADIUS)
+
 # 애니메이션 속도 조절용 상수
 X_FRAME = 0.01
 
@@ -92,6 +97,10 @@ def move_rectangle():
 
 def move_triangle():
     print("TRIANGLE")
+
+    # 이동 순서대로 꼭짓점을 나열
+    vertices = [TRI_TOP, TRI_RIGHT, TRI_LEFT]
+
     pass
 
 while True:
