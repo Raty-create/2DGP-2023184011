@@ -54,7 +54,10 @@ def move_rectangle():
     top = CENTER_Y - RECT_H / 2
     bottom = CENTER_Y + RECT_H / 2
 
-    pass
+    # 캐릭터 이미지 표시
+    clear_canvas()
+    character.draw(left, top)
+    update_canvas()
 
 def move_triangle():
     print("TRIANGLE")
