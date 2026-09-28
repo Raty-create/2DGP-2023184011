@@ -65,8 +65,8 @@ def move_rectangle():
     # 사각형 궤적의 네 변 좌표
     left = CENTER_X - RECT_W / 2
     right = CENTER_X + RECT_W / 2
-    top = CENTER_Y - RECT_H / 2
-    bottom = CENTER_Y + RECT_H / 2
+    top = CENTER_Y + RECT_H / 2
+    bottom = CENTER_Y - RECT_H / 2
 
     # 사각형 한 바퀴를 도는 꼭짓점 번호 (0: 좌상단, 1: 우상단, 2: 우하단, 3: 좌하단)
     for corner in range(4):
