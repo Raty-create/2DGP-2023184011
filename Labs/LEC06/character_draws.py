@@ -34,6 +34,20 @@ X_FRAME = 0.01
 # 도형이 바뀔 때 잠깐 멈추는 시간
 PAUSE = 0.5
 
+# 게임 루프를 계속 돌릴지 여부를 나타내는 변수
+running = True
+
+# 이벤트 처리 함수
+def handle_events():
+    global running
+    events = get_events()
+    for event in events:
+        if event.type == SDL_QUIT:
+            running = False
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
+            running = False
+    return running
+
 # 한 프레임에 캐릭터 한 장을 그리는 함수
 def draw_character(x, y):
     clear_canvas()
@@ -46,6 +60,9 @@ def move_circle():
 
     degree = 0
     while degree < 360:
+        if not handle_events():
+            return running
+        
         theta = math.radians(degree)
 
         # 코사인 값으로 x 좌표 계산
@@ -105,6 +122,9 @@ def move_rectangle():
     # 사각형 한 바퀴를 도는 꼭짓점 번호 (0: 좌상단, 1: 우상단, 2: 우하단, 3: 좌하단)
     for corner in range(4):
         for step in range(RECT_STEPS + 1):
+            if not handle_events():
+                return running
+            
             if corner == 0:
                 draw_top(left, right, top, step)
             elif corner == 1:
@@ -124,6 +144,9 @@ def move_triangle():
     # 삼각형 한 바퀴를 도는 변 번호
     for edge in range(3):
         for step in range(TRI_STEPS + 1):
+            if not handle_events():
+                return running
+            
             # 이번 변의 시작점과 끝점
             x1, y1 = vertices[edge]
             x2, y2 = vertices[(edge + 1) % 3]
@@ -138,7 +161,7 @@ def move_triangle():
             # 캐릭터 이미지 표시
             draw_character(x, y)
 
-while True:
+while running:
     move_circle()
     move_rectangle()
     move_triangle()
