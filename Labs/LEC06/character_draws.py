@@ -59,6 +59,40 @@ def move_circle():
 
         degree += 1
 
+# ---------------------------- 사각형 운동 헬퍼 함수 ----------------------------
+def draw_top(left, right, top, step):
+    # 위쪽 변을 왼쪽에서 오른쪽으로 이동
+    x = left + (right - left) * step / RECT_STEPS
+    y = top
+
+    # 캐릭터 이미지 표시
+    draw_character(x, y)
+
+def draw_right(right, top, bottom, step):
+    # 오른쪽 변을 위에서 아래로 이동
+    x = right
+    y = top + (bottom - top) * step / RECT_STEPS
+
+    # 캐릭터 이미지 표시
+    draw_character(x, y)
+
+def draw_bottom(left, right, bottom, step):
+    # 아래쪽 변을 오른쪽에서 왼쪽으로 이동
+    x = right - (right - left) * step / RECT_STEPS
+    y = bottom
+
+    # 캐릭터 이미지 표시
+    draw_character(x, y)
+
+def draw_left(left, top, bottom, step):
+    # 왼쪽 변을 아래에서 위로 이동
+    x = left
+    y = bottom - (bottom - top) * step / RECT_STEPS
+
+    # 캐릭터 이미지 표시
+    draw_character(x, y)
+# ---------------------------- 사각형 운동 헬퍼 함수 ----------------------------
+
 def move_rectangle():
     print("RECTANGLE")
 
@@ -72,25 +106,15 @@ def move_rectangle():
     for corner in range(4):
         for step in range(RECT_STEPS + 1):
             if corner == 0:
-                # 위쪽 변을 왼쪽에서 오른쪽으로 이동
-                x = left + (right - left) * step / RECT_STEPS
-                y = top
+                draw_top(left, right, top, step)
             elif corner == 1:
-                # 오른쪽 변을 위에서 아래로 이동
-                x = right
+                draw_right(right, top, bottom, step)
                 y = top + (bottom - top) * step / RECT_STEPS
             elif corner == 2:
-                # 아래쪽 변을 오른쪽에서 왼쪽으로 이동
-                x = right - (right - left) * step / RECT_STEPS
-                y = bottom
+                draw_bottom(left, right, bottom, step)
             else:
-                # 왼쪽 변을 아래에서 위로 이동
-                x = left
-                y = bottom - (bottom - top) * step / RECT_STEPS
-
-            # 캐릭터 이미지 표시
-            draw_character(x, y)
-
+                draw_left(left, top, bottom, step)
+                
 def move_triangle():
     print("TRIANGLE")
 
