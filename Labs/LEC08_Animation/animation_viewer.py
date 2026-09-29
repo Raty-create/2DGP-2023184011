@@ -175,13 +175,22 @@ def select_next_action():
     state["repeat"] = 0
     state["last_time"] = get_time()
 
-while True:
+running = True
+
+while running:
     clear_canvas()
     MovingIdle()
     VictoryPose()
     FallAndRoll()
     TurnInPlace()
     select_next_action()
+
+    for event in get_events():
+        if event.type == SDL_QUIT:
+            running = False
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
+            running = False
+
     update_canvas()
 
 close_canvas()
