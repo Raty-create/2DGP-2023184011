@@ -88,8 +88,8 @@ def MovingIdle():
 
     if frame_elapsed >= FRAME_DURATION:
         frame_elapsed -= FRAME_DURATION
-        if frame_index < len(MOVING_IDLE_FRAMES) - 1:
-            frame_index += 1
+        # 고정된 숫자가 아니라 현재 action의 프레임 수로 순환 범위를 정한다.
+        frame_index = (frame_index + 1) % len(MOVING_IDLE_FRAMES)
 
     x, y = screen_center()
     draw_frame(MOVING_IDLE_FRAMES[frame_index], x, y, CHARACTER_SCALE)
