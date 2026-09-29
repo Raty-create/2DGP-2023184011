@@ -12,6 +12,9 @@ SHEET_HEIGHT = 190
 # 34 * 9 = 306px로, 600px 높이 화면의 절반을 차지한다.
 CHARACTER_SCALE = 9
 
+# 프레임 하나를 화면에 보여 주는 시간이다. 짧으면 빠르고 길면 끊겨 보인다.
+FRAME_DURATION = 0.08
+
 # 한 프레임 = 스프라이트 시트 안의 사각형 영역.
 # left, bottom은 사각형의 왼쪽 아래 좌표, width, height는 잘라낼 크기이다.
 Frame = namedtuple("Frame", "left bottom width height")
@@ -71,9 +74,25 @@ def draw_frame(frame, x, y, scale=1.0):
                         x, y, frame.width * scale, frame.height * scale)
 
 
+frame_index = 0
+frame_elapsed = 0.0
+last_time = get_time()
+
+
 def MovingIdle():
+    global frame_index, frame_elapsed, last_time
+
+    now = get_time()
+    frame_elapsed += now - last_time
+    last_time = now
+
+    if frame_elapsed >= FRAME_DURATION:
+        frame_elapsed -= FRAME_DURATION
+        if frame_index < len(MOVING_IDLE_FRAMES) - 1:
+            frame_index += 1
+
     x, y = screen_center()
-    draw_frame(MOVING_IDLE_FRAMES[0], x, y, CHARACTER_SCALE)
+    draw_frame(MOVING_IDLE_FRAMES[frame_index], x, y, CHARACTER_SCALE)
 
 def VictoryPose():
     pass
