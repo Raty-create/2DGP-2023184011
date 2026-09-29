@@ -79,6 +79,7 @@ SPRITE = [
 for name, frames in SPRITE:
     print("%-12s : %2d frames" % (name, len(frames)))
 
+
 def screen_center():
     return CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2
 
@@ -106,42 +107,37 @@ def draw_frame(frame, x, y, scale=1.0):
                         x, y, frame.width * scale, frame.height * scale)
 
 
-frame_index = 0
-frame_elapsed = 0.0
-clip_repeat = 0
-clip_done = False
-pause_elapsed = 0.0
-last_time = get_time()
+# 클립 하나를 진행시키고 화면에 그리는 공통 재생기.
+def play_clip(frames, state):
+    now = get_time()
+    delta = now - state["last_time"]
+    state["last_time"] = now
+    state["frame_elapsed"] += delta
+
+    if state["done"]:
+        state["pause_elapsed"] += delta
+        if state["pause_elapsed"] >= PAUSE_TIME:
+            state["done"] = False
+            state["pause_elapsed"] = 0.0
+            state["repeat"] = 0
+    elif state["frame_elapsed"] >= FRAME_DURATION:
+        state["frame_elapsed"] -= FRAME_DURATION
+        if state["frame"] < len(frames) - 1:
+            state["frame"] += 1
+        else:
+            state["frame"] = 0
+            state["repeat"] += 1
+            if state["repeat"] >= REPEAT_COUNT:
+                state["done"] = True
+                # 정지 중에는 마지막 프레임을 유지한다.
+                state["frame"] = len(frames) - 1
+
+    x, y = screen_center()
+    draw_frame(frames[state["frame"]], x, y, CHARACTER_SCALE)
 
 
 def MovingIdle():
-    global frame_index, frame_elapsed, clip_repeat, clip_done, pause_elapsed, last_time
-
-    now = get_time()
-    delta = now - last_time
-    last_time = now
-    frame_elapsed += delta
-
-    if clip_done:
-        pause_elapsed += delta
-        if pause_elapsed >= PAUSE_TIME:
-            clip_done = False
-            pause_elapsed = 0.0
-            clip_repeat = 0
-    elif frame_elapsed >= FRAME_DURATION:
-        frame_elapsed -= FRAME_DURATION
-        if frame_index < len(MOVING_IDLE_FRAMES) - 1:
-            frame_index += 1
-        else:
-            frame_index = 0
-            clip_repeat += 1
-            if clip_repeat >= REPEAT_COUNT:
-                clip_done = True
-                # 정지 중에는 마지막 프레임을 유지한다.
-                frame_index = len(MOVING_IDLE_FRAMES) - 1
-
-    x, y = screen_center()
-    draw_frame(MOVING_IDLE_FRAMES[frame_index], x, y, CHARACTER_SCALE)
+    play_clip(MOVING_IDLE_FRAMES, ANIMATION_STATES[0])
 
 def VictoryPose():
     pass
