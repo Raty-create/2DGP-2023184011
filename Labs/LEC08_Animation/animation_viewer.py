@@ -17,6 +17,16 @@ character = load_image(SPRITE_SHEET_FILE)
 
 print("sprite sheet loaded: %d x %d" % (character.w, character.h))
 
+# MovingIdle: 시트 첫 번째 줄(bottom = 145). 6프레임 걷기 사이클이 두 번 반복된 12프레임.
+MOVING_IDLE_FRAMES = [
+    Frame(  8, 145, 18, 34), Frame( 31, 145, 18, 34),
+    Frame( 54, 145, 20, 33), Frame( 79, 145, 23, 32),
+    Frame(107, 145, 20, 33), Frame(132, 145, 18, 34),
+    Frame(155, 145, 18, 34), Frame(178, 145, 18, 34),
+    Frame(201, 145, 20, 33), Frame(226, 145, 23, 32),
+    Frame(254, 145, 20, 33), Frame(279, 145, 18, 34),
+]
+
 def MovingIdle():
     pass
 
