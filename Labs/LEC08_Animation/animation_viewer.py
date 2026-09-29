@@ -83,6 +83,21 @@ def screen_center():
     return CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2
 
 
+# action마다 독립적으로 진행되는 재생 상태를 만들어 둔다.
+def create_state():
+    return {
+        "frame": 0,
+        "frame_elapsed": 0.0,
+        "repeat": 0,
+        "done": False,
+        "pause_elapsed": 0.0,
+        "last_time": get_time(),
+    }
+
+
+ANIMATION_STATES = [create_state() for _ in SPRITE]
+
+
 def draw_frame(frame, x, y, scale=1.0):
     # 앞의 네 값은 스프라이트 시트 안의 프레임 영역, 뒤의 두 값은 캔버스 좌표이다.
     # 마지막 두 값은 화면에 표시할 크기이므로, 잘라내는 크기와 배율을 분리할 수 있다.
