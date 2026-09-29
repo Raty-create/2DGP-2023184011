@@ -159,12 +159,29 @@ def FallAndRoll():
 def TurnInPlace():
     play_clip(TURN_IN_PLACE_FRAMES, ANIMATION_STATES[3], 3)
 
+
+# 현재 action의 재생을 끝내고 다음 action으로 넘어간다.
+# 마지막 action 다음에는 0번으로 돌아가므로 전체 목록이 무한 반복된다.
+def select_next_action():
+    global current_action, current_finished
+
+    if not current_finished:
+        return
+    current_finished = False
+
+    current_action = (current_action + 1) % len(SPRITE)
+    state = ANIMATION_STATES[current_action]
+    state["frame"] = 0
+    state["repeat"] = 0
+    state["last_time"] = get_time()
+
 while True:
     clear_canvas()
     MovingIdle()
     VictoryPose()
     FallAndRoll()
     TurnInPlace()
+    select_next_action()
     update_canvas()
 
 close_canvas()
