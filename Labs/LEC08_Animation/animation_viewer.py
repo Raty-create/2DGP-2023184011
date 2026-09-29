@@ -100,6 +100,7 @@ ANIMATION_STATES = [create_state() for _ in SPRITE]
 
 # 지금 재생 중인 action의 SPRITE 안에서의 번호.
 current_action = 0
+current_finished = False
 
 
 def draw_frame(frame, x, y, scale=1.0):
@@ -112,6 +113,8 @@ def draw_frame(frame, x, y, scale=1.0):
 
 # 클립 하나를 진행시키고 화면에 그리는 공통 재생기.
 def play_clip(frames, state, action):
+    global current_finished
+
     if action != current_action:
         return
 
@@ -126,6 +129,8 @@ def play_clip(frames, state, action):
             state["done"] = False
             state["pause_elapsed"] = 0.0
             state["repeat"] = 0
+            # 5회 반복과 정지가 끝났음을 알린다.
+            current_finished = True
     elif state["frame_elapsed"] >= FRAME_DURATION:
         state["frame_elapsed"] -= FRAME_DURATION
         if state["frame"] < len(frames) - 1:
