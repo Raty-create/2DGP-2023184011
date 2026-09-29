@@ -55,8 +55,19 @@ TURN_IN_PLACE_FRAMES = [
     Frame(139,   7, 17, 34), Frame(161,   7, 16, 34),
 ]
 
+def screen_center():
+    return CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2
+
+
+def draw_frame(frame, x, y):
+    # 앞의 네 값은 스프라이트 시트 안의 프레임 영역, 뒤의 두 값은 캔버스 좌표이다.
+    character.clip_draw(frame.left, frame.bottom,
+                        frame.width, frame.height, x, y)
+
+
 def MovingIdle():
-    pass
+    x, y = screen_center()
+    draw_frame(MOVING_IDLE_FRAMES[0], x, y)
 
 def VictoryPose():
     pass
