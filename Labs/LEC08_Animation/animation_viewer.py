@@ -68,6 +68,17 @@ TURN_IN_PLACE_FRAMES = [
     Frame(139,   7, 17, 34), Frame(161,   7, 16, 34),
 ]
 
+# SPRITE = (action 이름, 그 action의 frame tuple)들의 나열.
+SPRITE = [
+    ("MovingIdle", MOVING_IDLE_FRAMES),
+    ("VictoryPose", VICTORY_POSE_FRAMES),
+    ("FallAndRoll", FALL_AND_ROLL_FRAMES),
+    ("TurnInPlace", TURN_IN_PLACE_FRAMES),
+]
+
+for name, frames in SPRITE:
+    print("%-12s : %2d frames" % (name, len(frames)))
+
 def screen_center():
     return CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2
 
