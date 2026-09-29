@@ -47,6 +47,14 @@ FALL_AND_ROLL_FRAMES = [
     Frame(430,  56, 29, 16), Frame(464,  56, 26, 24),
 ]
 
+# TurnInPlace: 시트 네 번째 줄. 4프레임 회전이 두 번 반복된 8프레임.
+TURN_IN_PLACE_FRAMES = [
+    Frame(  8,   7, 18, 34), Frame( 31,   7, 16, 34),
+    Frame( 52,   7, 17, 34), Frame( 74,   7, 16, 34),
+    Frame( 95,   7, 18, 34), Frame(118,   7, 16, 34),
+    Frame(139,   7, 17, 34), Frame(161,   7, 16, 34),
+]
+
 def MovingIdle():
     pass
 
