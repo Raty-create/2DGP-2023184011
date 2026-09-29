@@ -98,6 +98,9 @@ def create_state():
 
 ANIMATION_STATES = [create_state() for _ in SPRITE]
 
+# 지금 재생 중인 action의 SPRITE 안에서의 번호.
+current_action = 0
+
 
 def draw_frame(frame, x, y, scale=1.0):
     # 앞의 네 값은 스프라이트 시트 안의 프레임 영역, 뒤의 두 값은 캔버스 좌표이다.
@@ -108,7 +111,10 @@ def draw_frame(frame, x, y, scale=1.0):
 
 
 # 클립 하나를 진행시키고 화면에 그리는 공통 재생기.
-def play_clip(frames, state):
+def play_clip(frames, state, action):
+    if action != current_action:
+        return
+
     now = get_time()
     delta = now - state["last_time"]
     state["last_time"] = now
@@ -137,16 +143,16 @@ def play_clip(frames, state):
 
 
 def MovingIdle():
-    play_clip(MOVING_IDLE_FRAMES, ANIMATION_STATES[0])
+    play_clip(MOVING_IDLE_FRAMES, ANIMATION_STATES[0], 0)
 
 def VictoryPose():
-    play_clip(VICTORY_POSE_FRAMES, ANIMATION_STATES[1])
+    play_clip(VICTORY_POSE_FRAMES, ANIMATION_STATES[1], 1)
 
 def FallAndRoll():
-    play_clip(FALL_AND_ROLL_FRAMES, ANIMATION_STATES[2])
+    play_clip(FALL_AND_ROLL_FRAMES, ANIMATION_STATES[2], 2)
 
 def TurnInPlace():
-    play_clip(TURN_IN_PLACE_FRAMES, ANIMATION_STATES[3])
+    play_clip(TURN_IN_PLACE_FRAMES, ANIMATION_STATES[3], 3)
 
 while True:
     clear_canvas()
