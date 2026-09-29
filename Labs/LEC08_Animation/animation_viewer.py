@@ -183,6 +183,22 @@ def select_next_action():
     state["repeat"] = 0
     state["last_time"] = get_time()
 
+
+# 현재 action이 몇 번 반복되었는지, 정지 구간인지 화면 아래에 표시한다.
+def draw_playback_indicator(state):
+    box_width, box_height, gap = 28, 20, 12
+    total = REPEAT_COUNT * box_width + (REPEAT_COUNT - 1) * gap
+    start_x = (CANVAS_WIDTH - total) / 2
+    base_y = GROUND_Y - 70
+
+    for i in range(REPEAT_COUNT):
+        x1 = start_x + i * (box_width + gap)
+        x2 = x1 + box_width
+        # 정지 구간이면 5칸을 모두 채워 5회 반복이 끝났음을 알린다.
+        filled = i < state["repeat"] or state["done"]
+        draw_rectangle(x1, base_y, x2, base_y + box_height,
+                       40, 40, 40, 255, filled)
+
 running = True
 
 while running:
@@ -192,6 +208,7 @@ while running:
     FallAndRoll()
     TurnInPlace()
     select_next_action()
+    draw_playback_indicator(ANIMATION_STATES[current_action])
 
     for event in get_events():
         if event.type == SDL_QUIT:
