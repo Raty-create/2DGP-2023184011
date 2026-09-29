@@ -1,12 +1,20 @@
 from pico2d import *
 from collections import namedtuple
 
+# renderer는 open_canvas()가 실행된 뒤에 만들어지므로 star import로는
+# 늦게 만들어진 값을 받을 수 없다. 실제 모듈을 별칭으로 가져와 접근한다.
+from pico2d import pico2d as p2d
+
 CANVAS_WIDTH = 800
 CANVAS_HEIGHT = 600
 
 SPRITE_SHEET_FILE = "Mario_sprite_sheet.png"
 SHEET_WIDTH = 500
 SHEET_HEIGHT = 190
+
+# 스프라이트 시트는 알파 채널이 없는 RGB 이미지라, 프레임 사각형 안에
+# 배경색이 함께 들어 있다. 캔버스를 같은 색으로 덮으면 사각형 경계가 보이지 않는다.
+SHEET_BACKGROUND = (140, 198, 255)
 
 # 원본 스프라이트는 34px 정도로 작으므로 9배로 확대한다.
 # 34 * 9 = 306px로, 600px 높이 화면의 절반을 차지한다.
@@ -199,10 +207,17 @@ def draw_playback_indicator(state):
         draw_rectangle(x1, base_y, x2, base_y + box_height,
                        40, 40, 40, 255, filled)
 
+def clear_background():
+    red, green, blue = SHEET_BACKGROUND
+    p2d.SDL_SetRenderDrawColor(p2d.renderer, red, green, blue, 255)
+    p2d.SDL_RenderClear(p2d.renderer)
+
+
 running = True
 
 while running:
     clear_canvas()
+    clear_background()
     MovingIdle()
     VictoryPose()
     FallAndRoll()
