@@ -146,7 +146,7 @@ def FallAndRoll():
     play_clip(FALL_AND_ROLL_FRAMES, ANIMATION_STATES[2])
 
 def TurnInPlace():
-    pass
+    play_clip(TURN_IN_PLACE_FRAMES, ANIMATION_STATES[3])
 
 while True:
     clear_canvas()
