@@ -27,6 +27,13 @@ MOVING_IDLE_FRAMES = [
     Frame(254, 145, 20, 33), Frame(279, 145, 18, 34),
 ]
 
+# VictoryPose: 시트 두 번째 줄. MovingIdle과 프레임 수가 다른 5프레임.
+VICTORY_POSE_FRAMES = [
+    Frame(  8, 103, 20, 34), Frame( 33, 103, 22, 33),
+    Frame( 60, 103, 23, 32), Frame( 88, 103, 22, 33),
+    Frame(119, 104, 22, 32),
+]
+
 def MovingIdle():
     pass
 
