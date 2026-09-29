@@ -143,7 +143,7 @@ def VictoryPose():
     play_clip(VICTORY_POSE_FRAMES, ANIMATION_STATES[1])
 
 def FallAndRoll():
-    pass
+    play_clip(FALL_AND_ROLL_FRAMES, ANIMATION_STATES[2])
 
 def TurnInPlace():
     pass
