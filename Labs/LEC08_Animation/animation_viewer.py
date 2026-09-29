@@ -8,6 +8,10 @@ SPRITE_SHEET_FILE = "Mario_sprite_sheet.png"
 SHEET_WIDTH = 500
 SHEET_HEIGHT = 190
 
+# 원본 스프라이트는 34px 정도로 작으므로 9배로 확대한다.
+# 34 * 9 = 306px로, 600px 높이 화면의 절반을 차지한다.
+CHARACTER_SCALE = 9
+
 # 한 프레임 = 스프라이트 시트 안의 사각형 영역.
 # left, bottom은 사각형의 왼쪽 아래 좌표, width, height는 잘라낼 크기이다.
 Frame = namedtuple("Frame", "left bottom width height")
@@ -59,15 +63,17 @@ def screen_center():
     return CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2
 
 
-def draw_frame(frame, x, y):
+def draw_frame(frame, x, y, scale=1.0):
     # 앞의 네 값은 스프라이트 시트 안의 프레임 영역, 뒤의 두 값은 캔버스 좌표이다.
+    # 마지막 두 값은 화면에 표시할 크기이므로, 잘라내는 크기와 배율을 분리할 수 있다.
     character.clip_draw(frame.left, frame.bottom,
-                        frame.width, frame.height, x, y)
+                        frame.width, frame.height,
+                        x, y, frame.width * scale, frame.height * scale)
 
 
 def MovingIdle():
     x, y = screen_center()
-    draw_frame(MOVING_IDLE_FRAMES[0], x, y)
+    draw_frame(MOVING_IDLE_FRAMES[0], x, y, CHARACTER_SCALE)
 
 def VictoryPose():
     pass
