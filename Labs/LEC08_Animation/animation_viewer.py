@@ -140,7 +140,7 @@ def MovingIdle():
     play_clip(MOVING_IDLE_FRAMES, ANIMATION_STATES[0])
 
 def VictoryPose():
-    pass
+    play_clip(VICTORY_POSE_FRAMES, ANIMATION_STATES[1])
 
 def FallAndRoll():
     pass
