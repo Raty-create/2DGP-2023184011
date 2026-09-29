@@ -21,6 +21,11 @@ REPEAT_COUNT = 5
 # 5회 반복이 끝난 뒤 다음 action으로 넘어가기 전에 멈춰 있는 시간이다.
 PAUSE_TIME = 1.0
 
+# 캐릭터가 서 있는 바닥선. 프레임마다 높이가 다르기 때문에
+# 프레임의 아래쪽 끝을 이 기준선에 맞춰 그린다.
+# 34 * 9 = 306px 높이로 그려지므로 화면 중앙(300)에 걸쳐 표시된다.
+GROUND_Y = 150
+
 # 한 프레임 = 스프라이트 시트 안의 사각형 영역.
 # left, bottom은 사각형의 왼쪽 아래 좌표, width, height는 잘라낼 크기이다.
 Frame = namedtuple("Frame", "left bottom width height")
@@ -143,8 +148,11 @@ def play_clip(frames, state, action):
                 # 정지 중에는 마지막 프레임을 유지한다.
                 state["frame"] = len(frames) - 1
 
-    x, y = screen_center()
-    draw_frame(frames[state["frame"]], x, y, CHARACTER_SCALE)
+    x, _ = screen_center()
+    frame = frames[state["frame"]]
+    # 프레임마다 높이가 다르므로 가운데가 아니라 바닥이 같은 높이에 오도록 그린다.
+    y = GROUND_Y + frame.height * CHARACTER_SCALE / 2
+    draw_frame(frame, x, y, CHARACTER_SCALE)
 
 
 def MovingIdle():
