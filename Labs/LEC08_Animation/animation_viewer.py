@@ -18,6 +18,9 @@ FRAME_DURATION = 0.08
 # 한 action을 몇 번 반복한 뒤 다음 action으로 넘어갈지 정한다.
 REPEAT_COUNT = 5
 
+# 5회 반복이 끝난 뒤 다음 action으로 넘어가기 전에 멈춰 있는 시간이다.
+PAUSE_TIME = 1.0
+
 # 한 프레임 = 스프라이트 시트 안의 사각형 영역.
 # left, bottom은 사각형의 왼쪽 아래 좌표, width, height는 잘라낼 크기이다.
 Frame = namedtuple("Frame", "left bottom width height")
@@ -81,17 +84,25 @@ frame_index = 0
 frame_elapsed = 0.0
 clip_repeat = 0
 clip_done = False
+pause_elapsed = 0.0
 last_time = get_time()
 
 
 def MovingIdle():
-    global frame_index, frame_elapsed, clip_repeat, clip_done, last_time
+    global frame_index, frame_elapsed, clip_repeat, clip_done, pause_elapsed, last_time
 
     now = get_time()
-    frame_elapsed += now - last_time
+    delta = now - last_time
     last_time = now
+    frame_elapsed += delta
 
-    if not clip_done and frame_elapsed >= FRAME_DURATION:
+    if clip_done:
+        pause_elapsed += delta
+        if pause_elapsed >= PAUSE_TIME:
+            clip_done = False
+            pause_elapsed = 0.0
+            clip_repeat = 0
+    elif frame_elapsed >= FRAME_DURATION:
         frame_elapsed -= FRAME_DURATION
         if frame_index < len(MOVING_IDLE_FRAMES) - 1:
             frame_index += 1
@@ -100,6 +111,8 @@ def MovingIdle():
             clip_repeat += 1
             if clip_repeat >= REPEAT_COUNT:
                 clip_done = True
+                # 정지 중에는 마지막 프레임을 유지한다.
+                frame_index = len(MOVING_IDLE_FRAMES) - 1
 
     x, y = screen_center()
     draw_frame(MOVING_IDLE_FRAMES[frame_index], x, y, CHARACTER_SCALE)
