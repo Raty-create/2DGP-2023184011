@@ -34,11 +34,31 @@ PAUSE_TIME = 1.0
 # 최대 표시 높이 180px를 감안해 화면 중앙(300)보다 아래에 둔다.
 GROUND_Y = 380
 
+# 화면 위에 액션 이름과 진행 표시줄을 그릴 때 쓰는 글꼴이다.
+# 액션 이름은 영문이라 어떤 시스템 폰트에서도 폭이 비슷해 굴림체를 쓴다.
+UI_FONT_FILE = "C:/Windows/Fonts/malgun.ttf"
+UI_FONT_SIZE = 20
+
+# 액션 이름을 화면 어느 위치에 그릴지 정한다.
+# 캐릭터는 화면 중앙에 있으므로 이름은 왼쪽 위에 둔다.
+UI_TEXT_X = 20
+UI_TEXT_Y = 30
+
+# 진행 표시줄을 그릴 영역이다. 캐릭터 그림과 겹치지 않게 화면 아래에 둔다.
+UI_BAR_LEFT = 100
+UI_BAR_RIGHT = CANVAS_WIDTH - 100
+UI_BAR_TOP = CANVAS_HEIGHT - 40
+UI_BAR_HEIGHT = 10
+
 open_canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
 
 # 알파 채널이 있는 투명 배경 시트이므로 캔버스만 지우면 된다.
 # LEC08이 알파 없는 RGB 시트 때문에 쓰던 배경색 덮어쓰기는 필요 없다.
 sheet = load_image(SPRITE_SHEET_FILE)
+
+# 액션 이름과 진행 표시줄을 그릴 글꼴. 뷰어와 함께 배포하지 않고
+# Windows가 기본으로 제공하는 굴림체를 경로로 가리킨다.
+ui_font = load_font(UI_FONT_FILE, UI_FONT_SIZE)
 
 # 뷰어가 무엇을 재생하는지 시작하자마자 확인하게 해준다.
 print("sprite sheet loaded: %d x %d" % (sheet.w, sheet.h))
