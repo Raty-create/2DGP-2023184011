@@ -51,11 +51,17 @@ UI_FONT_SIZE = 20
 UI_TEXT_X = 20
 UI_TEXT_Y = 570
 
-# 진행 표시줄을 그릴 영역이다. 캐릭터 그림과 겹치지 않게 화면 아래에 둔다.
+# 반복 횟수 인디케이터를 그릴 영역이다. FR-6.1은 반복 횟수를 5칸으로
+# 나타내기를 요구하므로 한 칸에 해당하는 폭과 칸 사이 간격을 상수로 둔다.
+# 캐릭터 그림과 겹치지 않게 화면 아래에 배치한다.
 UI_BAR_LEFT = 100
-UI_BAR_RIGHT = CANVAS_WIDTH - 100
 UI_BAR_TOP = CANVAS_HEIGHT - 40
-UI_BAR_HEIGHT = 10
+UI_CELL_WIDTH = 80
+UI_CELL_HEIGHT = 14
+UI_CELL_GAP = 10
+# 칸은 채웠을 때와 비웠을 때를 구분해 보여 준다.
+UI_CELL_FILLED_COLOR = (40, 110, 220)
+UI_CELL_EMPTY_COLOR = (90, 90, 100)
 
 open_canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
 
@@ -186,24 +192,27 @@ def screen_center():
     return CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2
 
 
-def draw_progress_bar(progress):
-    """0.0 ~ 1.0 사이의 값만큼 아래쪽 가로 막대를 채워 그린다."""
-    width = UI_BAR_RIGHT - UI_BAR_LEFT
-
-    p2d.SDL_SetRenderDrawColor(p2d.renderer, 90, 90, 100, 255)
-    p2d.SDL_RenderFillRect(p2d.renderer, p2d.SDL_Rect(UI_BAR_LEFT, UI_BAR_TOP,
-                                                     width, UI_BAR_HEIGHT))
-
-    filled = round(width * progress)
-    if filled == 0:
+def draw_fill_rect(x, y, width, height, color):
+    """주어진 영역을 색으로 채운다."""
+    if width <= 0 or height <= 0:
         # SDL_RenderFillRect는 폭이 0이어도 왼쪽 끝 1픽셀을 칠한다.
-        # 막대가 비어 있어야 할 때 얼룩이 남지 않도록 아무것도 그리지 않는다.
+        # 아무것도 그릴 차례에는 얼룩이 남지 않도록 건너뛴다.
         return
+    p2d.SDL_SetRenderDrawColor(p2d.renderer, color[0], color[1], color[2], 255)
+    p2d.SDL_RenderFillRect(p2d.renderer, p2d.SDL_Rect(x, y, width, height))
 
-    p2d.SDL_SetRenderDrawColor(p2d.renderer, 40, 110, 220, 255)
-    p2d.SDL_RenderFillRect(p2d.renderer,
-                           p2d.SDL_Rect(UI_BAR_LEFT, UI_BAR_TOP,
-                                        filled, UI_BAR_HEIGHT))
+
+def draw_repeat_indicator(repeat, total):
+    """반복 횟수를 칸 total개로 나타낸다.
+
+    FR-6.2에 따라 이미 마친 repeat칸만 채우고 남은 칸은 비운다.
+    정지 구간에는 repeat가 total과 같으므로 5칸이 모두 채워진다. (FR-6.3)
+    """
+    for index in range(total):
+        # 칸 사이 간격만큼 띄워 가로로 나란히 놓는다.
+        x = UI_BAR_LEFT + index * (UI_CELL_WIDTH + UI_CELL_GAP)
+        color = UI_CELL_FILLED_COLOR if index < repeat else UI_CELL_EMPTY_COLOR
+        draw_fill_rect(x, UI_BAR_TOP, UI_CELL_WIDTH, UI_CELL_HEIGHT, color)
 
 
 def draw_frame(frame, x, y, scale=1.0):
@@ -241,16 +250,9 @@ class ActionState:
             return True
         return False
 
-    def progress(self):
-        """액션 안에서 지금 어디까지 왔는지 0.0 ~ 1.0 으로 나타낸다.
-
-        마지막 프레임에 멈춰 있는 동안에도 값이 계속 올라가야
-        진행 표시줄이 다 찬 것처럼 보여야 하므로
-        완료된 반복 횟수까지 더해 계산한다.
-        """
-        one = len(self.frames)
-        total = one * REPEAT_COUNT
-        return min((self.frame + 1 + self.repeat * one) / total, 1.0)
+    def is_complete(self):
+        """REPEAT_COUNT회 반복을 모두 끝내고 정지 구간에 들어갔는지 알려 준다."""
+        return self.repeat >= REPEAT_COUNT
 
 
 # 이 뷰어는 사용자의 입력으로 재생 위치를 바꾸지 않는다.
@@ -281,9 +283,9 @@ while running:
     y = GROUND_Y + frame.height * CHARACTER_SCALE / 2
     draw_frame(frame, x, y, CHARACTER_SCALE)
 
-    # 지금 보고 있는 액션 이름과, 그 액션 안에서 어디까지 왔는지 표시한다.
+    # 지금 보고 있는 액션 이름과, 그 액션을 몇 번 반복했는지 표시한다.
     ui_font.draw(UI_TEXT_X, UI_TEXT_Y, "Action: %s" % player.action)
-    draw_progress_bar(player.progress())
+    draw_repeat_indicator(player.repeat, REPEAT_COUNT)
 
     for event in get_events():
         if event.type == SDL_QUIT:
