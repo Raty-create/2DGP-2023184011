@@ -123,6 +123,25 @@ DEATH_FRAMES = [
     Frame(125, 468, 23, 42),
 ]
 
+# SPRITE = (action 이름, 그 action의 frame tuple)들의 나열.
+# 이 순서가 화면에 재생되는 순서이며, 마지막 다음에는 첫 번째로 돌아간다.
+# 여기를 고치면 액션 추가·삭제만으로 목록이 바뀌고 재생 로직은 손대지 않아도 된다.
+SPRITE = [
+    ("Idle", IDLE_FRAMES),
+    ("Walk", WALK_FRAMES),
+    ("Run", RUN_FRAMES),
+    ("Dash", DASH_FRAMES),
+    ("LookUp", LOOK_UP_FRAMES),
+    ("Crouch", CROUCH_FRAMES),
+    ("Roll", ROLL_FRAMES),
+    ("Push", PUSH_FRAMES),
+    ("Hurt", HURT_FRAMES),
+    ("Death", DEATH_FRAMES),
+]
+
+for name, frames in SPRITE:
+    print("%-12s : %2d frames" % (name, len(frames)))
+
 running = True
 
 while running:
