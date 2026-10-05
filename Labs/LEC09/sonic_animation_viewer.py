@@ -45,9 +45,11 @@ UI_FONT_FILE = "C:/Windows/Fonts/malgun.ttf"
 UI_FONT_SIZE = 20
 
 # 액션 이름을 화면 어느 위치에 그릴지 정한다.
-# 캐릭터는 화면 중앙에 있으므로 이름은 왼쪽 위에 둔다.
+# 캐릭터는 화면 중앙에 있으므로 이름은 화면 왼쪽 위에 둔다.
+# 글꼴의 draw는 글자의 중심을 받는다. y가 클수록 화면 위로 올라가므로
+# 화면 맨 위(화면 기준 20px 부근)에 보이려면 600 - 20 - 높이/2 인 큰 값을 준다.
 UI_TEXT_X = 20
-UI_TEXT_Y = 30
+UI_TEXT_Y = 570
 
 # 진행 표시줄을 그릴 영역이다. 캐릭터 그림과 겹치지 않게 화면 아래에 둔다.
 UI_BAR_LEFT = 100
@@ -191,10 +193,17 @@ def draw_progress_bar(progress):
     p2d.SDL_SetRenderDrawColor(p2d.renderer, 90, 90, 100, 255)
     p2d.SDL_RenderFillRect(p2d.renderer, p2d.SDL_Rect(UI_BAR_LEFT, UI_BAR_TOP,
                                                      width, UI_BAR_HEIGHT))
+
+    filled = round(width * progress)
+    if filled == 0:
+        # SDL_RenderFillRect는 폭이 0이어도 왼쪽 끝 1픽셀을 칠한다.
+        # 막대가 비어 있어야 할 때 얼룩이 남지 않도록 아무것도 그리지 않는다.
+        return
+
     p2d.SDL_SetRenderDrawColor(p2d.renderer, 40, 110, 220, 255)
     p2d.SDL_RenderFillRect(p2d.renderer,
                            p2d.SDL_Rect(UI_BAR_LEFT, UI_BAR_TOP,
-                                        round(width * progress), UI_BAR_HEIGHT))
+                                        filled, UI_BAR_HEIGHT))
 
 
 def draw_frame(frame, x, y, scale=1.0):
