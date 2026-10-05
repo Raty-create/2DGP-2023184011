@@ -64,6 +64,19 @@ WALK_FRAMES = [
     Frame(295, 117, 36, 38), Frame(334, 117, 32, 38), Frame(370, 117, 29, 39),
 ]
 
+# Run: 시트 세 번째 액션 행(bottom = 163). 6프레임.
+RUN_FRAMES = [
+    Frame(  1, 163, 33, 40), Frame( 39, 163, 35, 40), Frame( 89, 163, 35, 39),
+    Frame(130, 163, 34, 43), Frame(181, 163, 34, 42), Frame(228, 163, 33, 42),
+]
+
+# Dash: 시트 네 번째 액션 행(bottom = 199). 9프레임.
+DASH_FRAMES = [
+    Frame(  1, 199, 29, 31), Frame( 36, 199, 28, 33), Frame( 67, 199, 30, 31),
+    Frame( 98, 199, 31, 30), Frame(131, 199, 29, 32), Frame(162, 199, 29, 32),
+    Frame(193, 199, 30, 30), Frame(230, 199, 31, 30), Frame(268, 199, 30, 30),
+]
+
 running = True
 
 while running:
