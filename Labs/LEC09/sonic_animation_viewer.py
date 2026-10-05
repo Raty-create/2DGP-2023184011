@@ -166,6 +166,26 @@ def draw_frame(frame, x, y, scale=1.0):
                     frame.width, frame.height,
                     x, y, frame.width * scale, frame.height * scale)
 
+# 화면에 재생 중인 액션 하나를 나타내는 상태.
+# 지금 어느 액션의 몇 번째 프레임을 보고 있는지만 들고 있고,
+# 시간이 얼마나 흘렀는지는 main이 따지도록 넘겨준다.
+# play_clip을 호출하면 그 액션의 첫 프레임부터 다시 시작한다.
+class ActionState:
+    def __init__(self, action, frames):
+        self.action = action
+        self.frames = frames
+        self.frame = 0
+
+    def restart(self):
+        self.frame = 0
+
+    def current(self):
+        return self.frames[self.frame]
+
+    def is_last(self):
+        return self.frame == len(self.frames) - 1
+
+
 running = True
 
 while running:
