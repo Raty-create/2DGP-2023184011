@@ -1,4 +1,9 @@
 from pico2d import *
+from collections import namedtuple
+
+# 한 프레임 = 스프라이트 시트 안의 사각형 영역.
+# left, bottom은 사각형의 왼쪽 위 좌표, width, height는 잘라낼 크기이다.
+Frame = namedtuple("Frame", "left bottom width height")
 
 # 뷰어가 그릴 캔버스의 크기. LEC08의 animation_viewer.py와 같은 해상도를 쓴다.
 CANVAS_WIDTH = 800
@@ -35,6 +40,18 @@ sheet = load_image(SPRITE_SHEET_FILE)
 
 # 뷰어가 무엇을 재생하는지 시작하자마자 확인하게 해준다.
 print("sprite sheet loaded: %d x %d" % (sheet.w, sheet.h))
+
+# Idle: 시트에서 첫 번째 액션 행(bottom = 77). 11프레임.
+# sonic 시트는 균일 격자가 아니라 행마다 프레임 크기가 다른 밀집 배치라
+# (열, 행) 계산으로는 프레임을 얻을 수 없다. 좌표를 직접 재야 한다.
+# 액션 안에서 bottom을 77로 통일한 것은, 프레임마다 실제 높이가 다른데
+# 아래쪽 끝을 맞추지 않으면 캐릭터가 위아래로 흔들리기 때문이다.
+IDLE_FRAMES = [
+    Frame(  1, 77, 29, 39), Frame( 31, 77, 26, 38), Frame( 58, 77, 28, 39),
+    Frame( 86, 77, 30, 38), Frame(118, 77, 30, 38), Frame(150, 77, 30, 38),
+    Frame(182, 77, 29, 38), Frame(211, 77, 29, 39), Frame(240, 77, 29, 39),
+    Frame(270, 77, 24, 33), Frame(302, 77, 29, 27),
+]
 
 running = True
 
