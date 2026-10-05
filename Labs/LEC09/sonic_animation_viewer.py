@@ -185,6 +185,13 @@ class ActionState:
     def is_last(self):
         return self.frame == len(self.frames) - 1
 
+    def advance(self):
+        """다음 프레임으로 한 칸 이동한다. 마지막 프레임이면 되돌아가지 않는다."""
+        if self.frame < len(self.frames) - 1:
+            self.frame += 1
+            return True
+        return False
+
 
 running = True
 player = ActionState(*SPRITE[0])
