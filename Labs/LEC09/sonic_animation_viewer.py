@@ -33,6 +33,9 @@ open_canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
 # LEC08이 알파 없는 RGB 시트 때문에 쓰던 배경색 덮어쓰기는 필요 없다.
 sheet = load_image(SPRITE_SHEET_FILE)
 
+# 뷰어가 무엇을 재생하는지 시작하자마자 확인하게 해준다.
+print("sprite sheet loaded: %d x %d" % (sheet.w, sheet.h))
+
 running = True
 
 while running:
