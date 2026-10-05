@@ -68,6 +68,39 @@ UI_CELL_GAP = 10
 UI_CELL_FILLED_COLOR = (40, 110, 220)
 UI_CELL_EMPTY_COLOR = (90, 90, 100)
 
+def validate_settings():
+    """재생에 필요한 상수 값이 올바른지 확인해 문제를 알려 준다.
+
+    FRAME_DURATION이 0 이하이면 프레임이 절대 바뀌지 않아 화면이 멈춘 것처럼
+    보인다. 잘못된 값으로 멈추는 대신 어느 값이 문제인지 짚어 준다. (FR-4.4)
+    액션별 override 값도 같은 기준을 적용한다.
+    """
+    problems = []
+    for name, duration in sorted(ACTION_FRAME_DURATION.items()):
+        if not is_positive_duration(duration):
+            problems.append("ACTION_FRAME_DURATION[%s] = %s" % (name, duration))
+    if problems:
+        for text in problems:
+            print("재생 속도 설정 오류:", text)
+        print("프레임 시간이 0 이하이면 재생이 멈춥니다.")
+        return False
+
+    if not is_positive_duration(FRAME_DURATION):
+        print("재생 속도 설정 오류: FRAME_DURATION = %s" % FRAME_DURATION)
+        print("프레임 시간이 0 이하이면 재생이 멈춥니다.")
+        return False
+    return True
+
+
+def is_positive_duration(duration):
+    """프레임 표시 시간으로 쓸 수 있는 값인지 판단한다."""
+    return duration > 0
+
+
+if not validate_settings():
+    # 아직 캔버스를 열지 않았으므로 닫을 것도 없다.
+    exit()
+
 open_canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
 
 # 알파 채널이 있는 투명 배경 시트이므로 캔버스만 지우면 된다.
