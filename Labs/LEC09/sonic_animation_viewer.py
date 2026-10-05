@@ -193,8 +193,20 @@ class ActionState:
         return False
 
 
-running = True
+# 이 뷰어는 사용자의 입력으로 재생 위치를 바꾸지 않는다.
+# 시간이 흐르는 대로 SPRITE 목록을 순환하며 보여주기만 한다.
+# 목록을 한 바퀴 돈 뒤 처음으로 돌아가는 위치다.
 player = ActionState(*SPRITE[0])
+action_index = 0
+# 이번 액션을 몇 번 반복했는지 센다. REPEAT_COUNT에 닿으면 다음 액션으로 간다.
+repeat_count = 0
+# 현재 프레임이 화면에 표시된 시각이다. FRAME_DURATION이 지나면 다음 프레임으로 간다.
+# get_time()은 밀리초 단위로 지나간 시간을 돌려준다.
+frame_started = 0
+# 마지막 프레임에 도착한 시각을 저장한다. 이 시각부터 PAUSE_TIME 동안 멈춘다.
+paused_at = None
+
+running = True
 
 while running:
     clear_canvas()
@@ -214,6 +226,28 @@ while running:
             running = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
+
+    now = get_time()
+
+    if paused_at is not None:
+        # 정지 시간이 끝났으면 다음 액션으로 넘어간다.
+        if now - paused_at >= PAUSE_TIME:
+            action_index = (action_index + 1) % len(SPRITE)
+            player = ActionState(*SPRITE[action_index])
+            repeat_count = 0
+            paused_at = None
+    else:
+        # 정지 시간이 아니면 FRAME_DURATION마다 한 프레임씩 넘어간다.
+        if now - frame_started >= FRAME_DURATION:
+            frame_started = now
+            if not player.advance():
+                # advance가 False를 준 것은 마지막 프레임에 도착했다는 뜻이다.
+                # REPEAT_COUNT회 모두 돌았다면 액션 사이에 멈춘다.
+                repeat_count += 1
+                if repeat_count >= REPEAT_COUNT:
+                    paused_at = now
+                else:
+                    player.restart()
 
     update_canvas()
 
