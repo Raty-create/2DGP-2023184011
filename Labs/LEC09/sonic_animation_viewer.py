@@ -160,9 +160,15 @@ while running:
     clear_canvas()
 
     # 프레임 좌표가 맞는지 확인하려면 한 프레임만 그려 보면 된다.
-    # 일단 Idle의 첫 프레임을 CHARACTER_SCALE배 확대해 화면 중앙에 둔다.
-    x, y = screen_center()
-    draw_frame(IDLE_FRAMES[0], x, y, CHARACTER_SCALE)
+    # 일단 Idle의 첫 프레임을 CHARACTER_SCALE배 확대해 그린다.
+    x, _ = screen_center()
+    frame = IDLE_FRAMES[0]
+    # clip_draw의 두 번째 좌표는 그림의 중심이다. 프레임마다 높이가 다르므로
+    # 화면 중앙에 두면 액션이 바뀔 때 캐릭터가 들락날락한다.
+    # 대신 발이 닿는 바닥선을 GROUND_Y에 고정하려 한다.
+    # 확대한 높이의 절반을 더하면 그림의 아래쪽 끝이 정확히 GROUND_Y에 온다.
+    y = GROUND_Y + frame.height * CHARACTER_SCALE / 2
+    draw_frame(frame, x, y, CHARACTER_SCALE)
 
     for event in get_events():
         if event.type == SDL_QUIT:
