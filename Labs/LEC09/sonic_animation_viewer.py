@@ -1,6 +1,11 @@
 from pico2d import *
 from collections import namedtuple
 
+# renderer는 open_canvas()를 호출한 뒤에 만들어지므로 star import로는
+# 이 파일에서 바로 쓸 수 없다. 진행 표시줄처럼 SDL을 직접 그릴 때는
+# 모듈을 p2d로 붙잡고 p2d.renderer를 넘긴다.
+from pico2d import pico2d as p2d
+
 # 한 프레임 = 스프라이트 시트 안의 사각형 영역.
 # left는 시트 왼쪽에서 센 x좌표, width/height는 잘라낼 크기다.
 # bottom은 시트 아래쪽 끝에서 위로 센 y좌표다. clip_draw가
@@ -183,12 +188,13 @@ def draw_progress_bar(progress):
     """0.0 ~ 1.0 사이의 값만큼 아래쪽 가로 막대를 채워 그린다."""
     width = UI_BAR_RIGHT - UI_BAR_LEFT
 
-    SDL_SetRenderDrawColor(renderer, 90, 90, 100, 255)
-    SDL_RenderFillRect(renderer, SDL_Rect(UI_BAR_LEFT, UI_BAR_TOP,
-                                         width, UI_BAR_HEIGHT))
-    SDL_SetRenderDrawColor(renderer, 40, 110, 220, 255)
-    SDL_RenderFillRect(renderer, SDL_Rect(UI_BAR_LEFT, UI_BAR_TOP,
-                                         round(width * progress), UI_BAR_HEIGHT))
+    p2d.SDL_SetRenderDrawColor(p2d.renderer, 90, 90, 100, 255)
+    p2d.SDL_RenderFillRect(p2d.renderer, p2d.SDL_Rect(UI_BAR_LEFT, UI_BAR_TOP,
+                                                     width, UI_BAR_HEIGHT))
+    p2d.SDL_SetRenderDrawColor(p2d.renderer, 40, 110, 220, 255)
+    p2d.SDL_RenderFillRect(p2d.renderer,
+                           p2d.SDL_Rect(UI_BAR_LEFT, UI_BAR_TOP,
+                                        round(width * progress), UI_BAR_HEIGHT))
 
 
 def draw_frame(frame, x, y, scale=1.0):
