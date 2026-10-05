@@ -28,6 +28,11 @@ CHARACTER_SCALE = 4
 # 어느 액션도 너무 빠르지도 느리지도 않은 박자에 들어간다.
 FRAME_DURATION = 0.08
 
+# FR-4.3. 특정 액션만 어색하면 여기에 그 액션 이름과 시간을 적는다.
+# 공통값인 FRAME_DURATION은 그대로 두고, 적힌 액션에만 적용한다.
+# 예) {"Death": 0.12} 라고 하면 Death만 8.3fps로 천천히 재생된다.
+ACTION_FRAME_DURATION = {}
+
 # 한 액션을 몇 번 반복한 뒤 다음 액션으로 넘어갈지 정한다.
 REPEAT_COUNT = 5
 
@@ -233,6 +238,9 @@ class ActionState:
         self.frame = 0
         # 이 액션을 몇 번 반복했는지 센다. REPEAT_COUNT에 닿으면 액션이 끝난다.
         self.repeat = 0
+        # 이 액션의 한 프레임 표시 시간이다. ACTION_FRAME_DURATION에
+        # 이름이 있으면 그 값을, 없으면 공통값 FRAME_DURATION을 쓴다.
+        self.frame_duration = ACTION_FRAME_DURATION.get(action, FRAME_DURATION)
 
     def restart(self):
         self.frame = 0
@@ -306,8 +314,9 @@ while running:
             # 계산되어 첫 프레임이 1ms 만에 지나가 버린다. (FR-3.6)
             frame_started = now
     else:
-        # 정지 시간이 아니면 FRAME_DURATION마다 한 프레임씩 넘어간다.
-        if now - frame_started >= FRAME_DURATION:
+        # 정지 시간이 아니면 이 액션의 프레임 시간마다 한 프레임씩 넘어간다.
+        # 특정 액션만 다르게 재생하려면 ACTION_FRAME_DURATION에 이름을 적는다.
+        if now - frame_started >= player.frame_duration:
             frame_started = now
             if not player.advance():
                 # advance가 False를 준 것은 마지막 프레임에 도착했다는 뜻이다.
