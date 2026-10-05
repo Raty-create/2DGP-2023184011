@@ -281,19 +281,12 @@ class ActionState:
     def current(self):
         return self.frames[self.frame]
 
-    def is_last(self):
-        return self.frame == len(self.frames) - 1
-
     def advance(self):
         """다음 프레임으로 한 칸 이동한다. 마지막 프레임이면 되돌아가지 않는다."""
         if self.frame < len(self.frames) - 1:
             self.frame += 1
             return True
         return False
-
-    def is_complete(self):
-        """REPEAT_COUNT회 반복을 모두 끝내고 정지 구간에 들어갔는지 알려 준다."""
-        return self.repeat >= REPEAT_COUNT
 
 
 # 이 뷰어는 사용자의 입력으로 재생 위치를 바꾸지 않는다.
