@@ -156,8 +156,9 @@ while running:
     clear_canvas()
 
     # 프레임 좌표가 맞는지 확인하려면 한 프레임만 그려 보면 된다.
-    # 일단 Idle의 첫 프레임을 원본 크기 그대로 화면 중앙에 둔다.
-    draw_frame(IDLE_FRAMES[0], CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2)
+    # 일단 Idle의 첫 프레임을 CHARACTER_SCALE배 확대해 화면 중앙에 둔다.
+    draw_frame(IDLE_FRAMES[0], CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2,
+               CHARACTER_SCALE)
 
     for event in get_events():
         if event.type == SDL_QUIT:
