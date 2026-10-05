@@ -179,6 +179,18 @@ def screen_center():
     return CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2
 
 
+def draw_progress_bar(progress):
+    """0.0 ~ 1.0 사이의 값만큼 아래쪽 가로 막대를 채워 그린다."""
+    width = UI_BAR_RIGHT - UI_BAR_LEFT
+
+    SDL_SetRenderDrawColor(renderer, 90, 90, 100, 255)
+    SDL_RenderFillRect(renderer, SDL_Rect(UI_BAR_LEFT, UI_BAR_TOP,
+                                         width, UI_BAR_HEIGHT))
+    SDL_SetRenderDrawColor(renderer, 40, 110, 220, 255)
+    SDL_RenderFillRect(renderer, SDL_Rect(UI_BAR_LEFT, UI_BAR_TOP,
+                                         round(width * progress), UI_BAR_HEIGHT))
+
+
 def draw_frame(frame, x, y, scale=1.0):
     # 앞의 네 값은 스프라이트 시트 안의 프레임 영역, 뒤의 두 값은 캔버스 좌표이다.
     # 마지막 두 값은 화면에 표시할 크기이므로, 잘라내는 크기와 배율을 분리할 수 있다.
@@ -195,6 +207,8 @@ class ActionState:
         self.action = action
         self.frames = frames
         self.frame = 0
+        # 이 액션을 몇 번 반복했는지 센다. REPEAT_COUNT에 닿으면 액션이 끝난다.
+        self.repeat = 0
 
     def restart(self):
         self.frame = 0
@@ -212,14 +226,23 @@ class ActionState:
             return True
         return False
 
+    def progress(self):
+        """액션 안에서 지금 어디까지 왔는지 0.0 ~ 1.0 으로 나타낸다.
+
+        마지막 프레임에 멈춰 있는 동안에도 값이 계속 올라가야
+        진행 표시줄이 다 찬 것처럼 보여야 하므로
+        완료된 반복 횟수까지 더해 계산한다.
+        """
+        one = len(self.frames)
+        total = one * REPEAT_COUNT
+        return min((self.frame + 1 + self.repeat * one) / total, 1.0)
+
 
 # 이 뷰어는 사용자의 입력으로 재생 위치를 바꾸지 않는다.
 # 시간이 흐르는 대로 SPRITE 목록을 순환하며 보여주기만 한다.
 # 목록을 한 바퀴 돈 뒤 처음으로 돌아가는 위치다.
 player = ActionState(*SPRITE[0])
 action_index = 0
-# 이번 액션을 몇 번 반복했는지 센다. REPEAT_COUNT에 닿으면 다음 액션으로 간다.
-repeat_count = 0
 # 현재 프레임이 화면에 표시된 시각이다. FRAME_DURATION이 지나면 다음 프레임으로 간다.
 # get_time()은 밀리초 단위로 지나간 시간을 돌려준다.
 frame_started = 0
@@ -241,6 +264,10 @@ while running:
     y = GROUND_Y + frame.height * CHARACTER_SCALE / 2
     draw_frame(frame, x, y, CHARACTER_SCALE)
 
+    # 지금 보고 있는 액션 이름과, 그 액션 안에서 어디까지 왔는지 표시한다.
+    ui_font.draw(UI_TEXT_X, UI_TEXT_Y, "Action: %s" % player.action)
+    draw_progress_bar(player.progress())
+
     for event in get_events():
         if event.type == SDL_QUIT:
             running = False
@@ -254,7 +281,6 @@ while running:
         if now - paused_at >= PAUSE_TIME:
             action_index = (action_index + 1) % len(SPRITE)
             player = ActionState(*SPRITE[action_index])
-            repeat_count = 0
             paused_at = None
     else:
         # 정지 시간이 아니면 FRAME_DURATION마다 한 프레임씩 넘어간다.
@@ -263,8 +289,8 @@ while running:
             if not player.advance():
                 # advance가 False를 준 것은 마지막 프레임에 도착했다는 뜻이다.
                 # REPEAT_COUNT회 모두 돌았다면 액션 사이에 멈춘다.
-                repeat_count += 1
-                if repeat_count >= REPEAT_COUNT:
+                player.repeat += 1
+                if player.repeat >= REPEAT_COUNT:
                     paused_at = now
                 else:
                     player.restart()
