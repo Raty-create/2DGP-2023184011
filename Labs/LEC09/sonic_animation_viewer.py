@@ -77,6 +77,19 @@ DASH_FRAMES = [
     Frame(193, 199, 30, 30), Frame(230, 199, 31, 30), Frame(268, 199, 30, 30),
 ]
 
+# LookUp: 시트 다섯 번째 액션 행(bottom = 232). 6프레임.
+# 시트 전체에서 높이가 가장 낮은 행(27px)이다.
+LOOK_UP_FRAMES = [
+    Frame(  1, 232, 30, 27), Frame( 36, 232, 29, 27), Frame( 70, 232, 29, 27),
+    Frame(105, 232, 29, 27), Frame(139, 232, 29, 27), Frame(174, 232, 29, 27),
+]
+
+# Crouch: 시트 여섯 번째 액션 행(bottom = 273). 6프레임.
+CROUCH_FRAMES = [
+    Frame(  1, 273, 29, 35), Frame( 36, 273, 30, 35), Frame( 74, 273, 31, 35),
+    Frame(111, 273, 31, 36), Frame(149, 273, 30, 35), Frame(186, 273, 31, 36),
+]
+
 running = True
 
 while running:
