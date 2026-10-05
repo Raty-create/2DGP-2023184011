@@ -142,10 +142,22 @@ SPRITE = [
 for name, frames in SPRITE:
     print("%-12s : %2d frames" % (name, len(frames)))
 
+
+def draw_frame(frame, x, y, scale=1.0):
+    # 앞의 네 값은 스프라이트 시트 안의 프레임 영역, 뒤의 두 값은 캔버스 좌표이다.
+    # 마지막 두 값은 화면에 표시할 크기이므로, 잘라내는 크기와 배율을 분리할 수 있다.
+    sheet.clip_draw(frame.left, frame.bottom,
+                    frame.width, frame.height,
+                    x, y, frame.width * scale, frame.height * scale)
+
 running = True
 
 while running:
     clear_canvas()
+
+    # 프레임 좌표가 맞는지 확인하려면 한 프레임만 그려 보면 된다.
+    # 일단 Idle의 첫 프레임을 원본 크기 그대로 화면 중앙에 둔다.
+    draw_frame(IDLE_FRAMES[0], CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2)
 
     for event in get_events():
         if event.type == SDL_QUIT:
