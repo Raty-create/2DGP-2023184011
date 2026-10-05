@@ -299,6 +299,10 @@ while running:
             action_index = (action_index + 1) % len(SPRITE)
             player = ActionState(*SPRITE[action_index])
             paused_at = None
+            # 새 액션의 첫 프레임도 정해진 시간만큼 보여야 한다.
+            # 이 값을 갱신하지 않으면 1초짜리 정지 시간이 이미 지난 것으로
+            # 계산되어 첫 프레임이 1ms 만에 지나가 버린다. (FR-3.6)
+            frame_started = now
     else:
         # 정지 시간이 아니면 FRAME_DURATION마다 한 프레임씩 넘어간다.
         if now - frame_started >= FRAME_DURATION:
