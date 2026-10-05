@@ -259,8 +259,10 @@ class ActionState:
 player = ActionState(*SPRITE[0])
 action_index = 0
 # 현재 프레임이 화면에 표시된 시각이다. FRAME_DURATION이 지나면 다음 프레임으로 간다.
-# get_time()은 밀리초 단위로 지나간 시간을 돌려준다.
-frame_started = 0
+# get_time()은 초 단위로 지나간 시간을 돌려준다. 내부에서 SDL_GetTicks()를
+# 1000으로 나누기 때문에 FRAME_DURATION, PAUSE_TIME과 단위가 같다.
+# 여기서 1000을 또 곱하면 프레임 하나에 80초가 걸려 멈춘 것처럼 보인다.
+frame_started = get_time()
 # 마지막 프레임에 도착한 시각을 저장한다. 이 시각부터 PAUSE_TIME 동안 멈춘다.
 paused_at = None
 
