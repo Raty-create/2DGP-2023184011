@@ -43,9 +43,13 @@ frame = 0
 dir_x, dir_y = 0, 0
 last_dir_x = 1
 
+hide_cursor()
+
 while running:
     clear_canvas()
     handle_events()
+    frame = (frame + 1) % 8
     update_canvas()
+    delay(0.05)
 
 close_canvas()
