@@ -47,6 +47,7 @@ hide_cursor()
 
 while running:
     clear_canvas()
+    character.clip_draw(frame * 100, 100, 100, 100, x, y)
     handle_events()
     frame = (frame + 1) % 8
     update_canvas()
