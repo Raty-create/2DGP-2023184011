@@ -48,7 +48,14 @@ hide_cursor()
 while running:
     clear_canvas()
     tuk_ground.draw(TUK_WIDTH // 2, TUK_HEIGHT // 2)
-    character.clip_draw(frame * 100, 100, 100, 100, x, y)
+
+    if dir_x < 0:
+        character.clip_draw(frame * 100, 0, 100, 100, x, y)
+    elif dir_x > 0:
+        character.clip_draw(frame * 100, 100, 100, 100, x, y)
+    else:
+        character.clip_draw(frame * 100, 100, 100, 100, x, y)
+
     handle_events()
     frame = (frame + 1) % 8
     update_canvas()
