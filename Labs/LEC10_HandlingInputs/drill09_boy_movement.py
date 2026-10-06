@@ -47,6 +47,7 @@ hide_cursor()
 
 while running:
     clear_canvas()
+    tuk_ground.draw(TUK_WIDTH // 2, TUK_HEIGHT // 2)
     character.clip_draw(frame * 100, 100, 100, 100, x, y)
     handle_events()
     frame = (frame + 1) % 8
