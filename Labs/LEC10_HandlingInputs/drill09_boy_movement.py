@@ -49,11 +49,14 @@ while running:
     clear_canvas()
     tuk_ground.draw(TUK_WIDTH // 2, TUK_HEIGHT // 2)
 
-    if dir_x < 0:
+    if dir_x == 0 and dir_y == 0:
+        if last_dir_x == 1:
+            character.clip_draw(frame * 100, 300, 100, 100, x, y)
+        else:
+            character.clip_draw(frame * 100, 200, 100, 100, x, y)
+    elif dir_x < 0:
         character.clip_draw(frame * 100, 0, 100, 100, x, y)
     elif dir_x > 0:
-        character.clip_draw(frame * 100, 100, 100, 100, x, y)
-    else:
         character.clip_draw(frame * 100, 100, 100, 100, x, y)
 
     handle_events()
