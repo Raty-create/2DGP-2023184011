@@ -58,6 +58,11 @@ while running:
         character.clip_draw(frame * 100, 0, 100, 100, x, y)
     elif dir_x > 0:
         character.clip_draw(frame * 100, 100, 100, 100, x, y)
+    elif dir_y != 0:
+        if last_dir_x == 1:
+            character.clip_draw(frame * 100, 100, 100, 100, x, y)
+        else:
+            character.clip_draw(frame * 100, 0, 100, 100, x, y)
 
     handle_events()
     frame = (frame + 1) % 8
